@@ -1,0 +1,28 @@
+name: Sitemap Generator
+description: Generate sitemap.xml from .md and .html files
+author: Nathan Fallet
+
+inputs:
+  base_url:
+    description: 'Base URL of the website (e.g., https://example.com)'
+    required: true
+  output_path:
+    description: 'Where to write sitemap.xml (default: sitemap.xml)'
+    required: false
+    default: sitemap.xml
+  input_dir:
+    description: 'Which directory to scan (default: repo root)'
+    required: false
+    default: .
+
+runs:
+  using: "composite"
+  steps:
+    - run: chmod +x ${{ github.action_path }}/generate_sitemap.sh
+      shell: bash
+    - run: |
+        ${{ github.action_path }}/generate_sitemap.sh \
+          "${{ inputs.base_url }}" \
+          "${{ inputs.output_path }}" \
+          "${{ inputs.input_dir }}"
+      shell: bash
